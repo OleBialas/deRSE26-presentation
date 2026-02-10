@@ -38,6 +38,46 @@
             border-radius: 8px;
         }
 
+        .control-btns {
+            position: fixed;
+            bottom: 25px;
+            left: 80px;
+            z-index: 200;
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btns button {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.4em;
+            cursor: pointer;
+        }
+
+        .collapse-btn {
+            display: none;
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 200;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.4em;
+            cursor: pointer;
+        }
+
+        .iframe-wrapper:fullscreen .collapse-btn {
+            display: block;
+        }
+
         .iframe-overlay {
             position: absolute;
             top: 0;
@@ -49,27 +89,31 @@
     </style>
 </head>
 <body>
+    <div class="control-btns">
+        <button id="fullscreenBtn">&#x26F6;</button>
+        <button id="expandIframeBtn">&#x2922;</button>
+    </div>
     <div class="reveal">
         <div class="slides">
 
             <section>
                 <h2>Online Courses Combining Programming and Neuroscience</h2>
-                <div class="iframe-wrapper"><div class="iframe-overlay"></div><iframe src="https://ibots-bonn.de/teaching/#catalog"></iframe></div>
+                <div class="iframe-wrapper"><div class="iframe-overlay"></div><button class="collapse-btn">&#x2923;</button><iframe src="https://ibots-bonn.de/teaching/#catalog"></iframe></div>
             </section>
 
             <section>
                 <h2>Helping Researchers get Unstuck</h2>
-                <div class="iframe-wrapper"><div class="iframe-overlay"></div><iframe src="https://ibots-bonn.de/consulting/"></iframe></div>
+                <div class="iframe-wrapper"><div class="iframe-overlay"></div><button class="collapse-btn">&#x2923;</button><iframe src="https://ibots-bonn.de/consulting/"></iframe></div>
             </section>
 
             <section>
                 <h2>Open Source Materials for Self-Learning</h2>
-                <div class="iframe-wrapper"><div class="iframe-overlay"></div><iframe src="https://learn.ibots-bonn.de/docs/spike_analysis/"></iframe></div>
+                <div class="iframe-wrapper"><div class="iframe-overlay"></div><button class="collapse-btn">&#x2923;</button><iframe src="https://learn.ibots-bonn.de/docs/spike_analysis/"></iframe></div>
             </section>
 
             <section>
                 <h2>Browser-Executable Notebooks Powered by Pyodide</h2>
-                <div class="iframe-wrapper"><div class="iframe-overlay"></div><iframe src="https://learn.ibots-bonn.de/docs/intro_python_long/01_python_intro/01_python_types/"></iframe></div>
+                <div class="iframe-wrapper"><div class="iframe-overlay"></div><button class="collapse-btn">&#x2923;</button><iframe src="https://learn.ibots-bonn.de/docs/intro_python_long/01_python_intro/01_python_types/"></iframe></div>
             </section>
 
         </div>
@@ -102,11 +146,31 @@
             plugins: [ RevealZoom ]
         });
 
-        // Double-click iframe area to expand to fullscreen
+        // Toggle presentation fullscreen
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        });
+
+        // Expand current iframe wrapper to fullscreen
+        document.getElementById('expandIframeBtn').addEventListener('click', () => {
+            const wrapper = Reveal.getCurrentSlide()?.querySelector('.iframe-wrapper');
+            if (wrapper) wrapper.requestFullscreen();
+        });
+
+        // Collapse buttons exit fullscreen
+        document.querySelectorAll('.collapse-btn').forEach(btn => {
+            btn.addEventListener('click', () => document.exitFullscreen());
+        });
+
+        // Double-click iframe area to expand to fullscreen (mouse)
         document.querySelectorAll('.iframe-overlay').forEach(overlay => {
             overlay.addEventListener('dblclick', () => {
-                const iframe = overlay.parentElement.querySelector('iframe');
-                if (iframe) iframe.requestFullscreen();
+                const wrapper = overlay.parentElement;
+                if (wrapper) wrapper.requestFullscreen();
             });
         });
     </script>
