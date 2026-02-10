@@ -58,9 +58,21 @@
             cursor: pointer;
         }
 
+        .iframe-wrapper:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            background: black;
+        }
+
+        .iframe-wrapper:fullscreen iframe {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
         .collapse-btn {
             display: none;
-            position: fixed;
+            position: absolute;
             bottom: 25px;
             left: 25px;
             z-index: 200;
@@ -76,6 +88,10 @@
 
         .iframe-wrapper:fullscreen .collapse-btn {
             display: block;
+        }
+
+        .iframe-wrapper:fullscreen .iframe-overlay {
+            display: none;
         }
 
         .iframe-overlay {
@@ -116,17 +132,16 @@
                 <div class="iframe-wrapper"><div class="iframe-overlay"></div><button class="collapse-btn">&#x2923;</button><iframe src="https://learn.ibots-bonn.de/docs/intro_python_long/01_python_intro/01_python_types/"></iframe></div>
             </section>
 
-            <section data-background-iframe="https://ibots-bonn.de/community/"
-                     data-background-interactive
-                     data-clip-width="0"
-                     data-clip-bottom="0">
+
+            <section>
+                <h2>Browser-Executable Notebooks Powered by Pyodide</h2>
+                <div class="iframe-wrapper"><div class="iframe-overlay"></div><button class="collapse-btn">&#x2923;</button><iframe src="https://ibots-bonn.de/community/"></iframe></div>
             </section>
-            
-            
-            <section data-background-iframe="https://ibots-bonn.de/events/"
-                     data-background-interactive
-                     data-clip-width="0"
-                     data-clip-bottom="0">
+
+
+            <section>
+                <h2>Browser-Executable Notebooks Powered by Pyodide</h2>
+                <div class="iframe-wrapper"><div class="iframe-overlay"></div><button class="collapse-btn">&#x2923;</button><iframe src="https://ibots-bonn.de/events/"></iframe></div>
             </section>
 
         </div>
