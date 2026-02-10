@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>IBOTS Teaching Presentation</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/theme/black.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/zoom/zoom.css">
+
+    <style>
+        /* Set default zoom level for iframe */
+        .reveal .slide-background-content {
+            transform: scale(1.0) translateY(50px);
+            transform-origin: top center;
+        }
+
+        /* Dynamic overlays controlled by JavaScript */
+        .slide-overlay {
+            position: fixed;
+            background: #191919;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+        }
+
+        .slide-overlay.right {
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .slide-overlay.left {
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .slide-overlay.top {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            transition: height 0.3s ease;
+        }
+
+        .slide-overlay.bottom {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            transition: height 0.3s ease;
+        }
+
+        .slide-overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dynamic overlays for hiding slide portions -->
+    <div class="slide-overlay left"></div>
+    <div class="slide-overlay right"></div>
+    <div class="slide-overlay top"></div>
+    <div class="slide-overlay bottom"></div>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <section data-background-iframe="https://ibots-bonn.de/teaching/#catalog"
+                     data-background-interactive
+                     data-clip-width="0"
+                     data-clip-top="0"
+                     data-clip-bottom="0">
+            </section>
+
+
+            <section data-background-iframe="https://ibots-bonn.de/teaching/#how-we-teach"
+                     data-background-interactive
+                     data-clip-width="0"
+                     data-clip-bottom="0">
+            </section>
+
+            <section data-background-iframe="https://ibots-bonn.de/consulting/"
+                     data-background-interactive
+                     data-clip-width="0"
+                     data-clip-bottom="0">
+            </section>
+
+
+            <section data-background-iframe="https://ibots-bonn.de/consulting/#approach"
+                     data-background-interactive
+                     data-clip-width="0"
+                     data-clip-bottom="0">
+            </section>
+
+
+            <section data-background-iframe="https://learn.ibots-bonn.de/docs/spike_analysis/"
+                     data-background-interactive
+                     data-clip-width="0"
+                     data-clip-top="0"
+                     data-clip-bottom="0">
+            </section>
+
+
+            <section data-background-iframe="https://learn.ibots-bonn.de/docs/intro_python_long/01_python_intro/01_python_types/"
+                     data-background-interactive
+                     data-clip-width="0"
+                     data-clip-top="0"
+                     data-clip-bottom="0">
+            </section>
+
+
+        </div>
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/zoom/zoom.js"></script>
+
+    <script>
+        // Initialize Reveal.js
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide',
+            transitionSpeed: 'default', // 'default', 'fast', or 'slow'
+            backgroundTransition: 'slide', // Animate background iframes
+
+            // Responsive width and height
+            width: 1200,
+            height: 700,
+
+            // Factor of the display size that should remain empty around the content
+            margin: 0.1,
+
+            // Bounds for smallest/largest possible scale to apply to content
+            minScale: 0.2,
+            maxScale: 2.0,
+
+            // Auto-advance slides
+            autoSlide: 3000, // Advance every 5 seconds
+            loop: true, // Loop back to the first slide after the last
+            autoSlideStoppable: true, // Stop auto-advance on user interaction
+
+            // Enable plugins
+            plugins: [ RevealZoom ]
+        });
+
+        // Dynamic overlay management
+        const overlayLeft = document.querySelector('.slide-overlay.left');
+        const overlayRight = document.querySelector('.slide-overlay.right');
+        const overlayTop = document.querySelector('.slide-overlay.top');
+        const overlayBottom = document.querySelector('.slide-overlay.bottom');
+
+        function updateOverlays(slide) {
+            // Support both symmetric (data-clip-width/height) and asymmetric (data-clip-left/right/top/bottom)
+            const clipWidth = slide.dataset.clipWidth;
+            const clipHeight = slide.dataset.clipHeight;
+            const clipLeft = slide.dataset.clipLeft || clipWidth;
+            const clipRight = slide.dataset.clipRight || clipWidth;
+            const clipTop = slide.dataset.clipTop || clipHeight;
+            const clipBottom = slide.dataset.clipBottom || clipHeight;
+
+            // Debug logging
+            console.log('Clip values:', { clipLeft, clipRight, clipTop, clipBottom });
+
+            // Update left overlay
+            if (clipLeft && clipLeft !== '0') {
+                overlayLeft.style.width = clipLeft + 'px';
+                overlayLeft.classList.add('active');
+                console.log('Left overlay width:', overlayLeft.style.width);
+            } else {
+                overlayLeft.style.width = '0px';
+                overlayLeft.classList.remove('active');
+            }
+
+            // Update right overlay
+            if (clipRight && clipRight !== '0') {
+                overlayRight.style.width = clipRight + 'px';
+                overlayRight.classList.add('active');
+                console.log('Right overlay width:', overlayRight.style.width);
+            } else {
+                overlayRight.style.width = '0px';
+                overlayRight.classList.remove('active');
+                console.log('Right overlay removed');
+            }
+
+            // Update top overlay
+            if (clipTop && clipTop !== '0') {
+                overlayTop.style.height = clipTop + 'px';
+                overlayTop.classList.add('active');
+                console.log('Top overlay height:', overlayTop.style.height);
+            } else {
+                overlayTop.style.height = '0px';
+                overlayTop.classList.remove('active');
+            }
+
+            // Update bottom overlay
+            if (clipBottom && clipBottom !== '0') {
+                overlayBottom.style.height = clipBottom + 'px';
+                overlayBottom.classList.add('active');
+                console.log('Bottom overlay height:', overlayBottom.style.height);
+            } else {
+                overlayBottom.style.height = '0px';
+                overlayBottom.classList.remove('active');
+            }
+        }
+
+        // Adjust iframe transform for specific slides
+        function adjustIframePosition(slide) {
+            const bgContent = document.querySelector('.slide-background.present .slide-background-content');
+            const scrollOffset = slide.dataset.scrollOffset;
+
+            if (bgContent && scrollOffset) {
+                const currentScale = bgContent.style.transform.match(/scale\(([\d.]+)\)/)?.[1] || '1.0';
+                bgContent.style.transform = `scale(${currentScale}) translateY(${scrollOffset}px)`;
+            } else if (bgContent) {
+                const currentScale = bgContent.style.transform.match(/scale\(([\d.]+)\)/)?.[1] || '1.0';
+                bgContent.style.transform = `scale(${currentScale}) translateY(50px)`;
+            }
+        }
+
+        // Handle slide changes
+        Reveal.on('slidechanged', event => {
+            updateOverlays(event.currentSlide);
+            adjustIframePosition(event.currentSlide);
+        });
+
+        // Handle initial slide on load
+        Reveal.on('ready', event => {
+            updateOverlays(event.currentSlide);
+            adjustIframePosition(event.currentSlide);
+        });
+    </script>
+</body>
+</html>
