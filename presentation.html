@@ -40,7 +40,7 @@
 
         .control-btns {
             position: fixed;
-            bottom: 25px;
+            bottom: 22px;
             left: 80px;
             z-index: 200;
             display: flex;
@@ -167,7 +167,7 @@
             minScale: 0.2,
             maxScale: 2.0,
 
-            autoSlide: 15000,
+            autoSlide: 8000,
             loop: true,
             autoSlideStoppable: true,
 
@@ -201,6 +201,17 @@
                 if (wrapper) wrapper.requestFullscreen();
             });
         });
-    </script>
+
+        // Pause/resume autoplay based on iframe fullscreen state
+        document.addEventListener('fullscreenchange', () => {
+            const el = document.fullscreenElement;
+            if (el && el !== document.documentElement) {
+                Reveal.configure({ autoSlide: 2147483647 }); // max safe setTimeout value ≈ 24 days
+            } else {
+                Reveal.configure({ autoSlide: 8000 });
+            }
+        });
+
+</script>
 </body>
 </html>
